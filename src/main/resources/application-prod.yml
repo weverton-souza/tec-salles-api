@@ -1,0 +1,13 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /v1
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/tec_salles
+    username: root
+    password: dW1jdGVjFtoPdl9kYg==

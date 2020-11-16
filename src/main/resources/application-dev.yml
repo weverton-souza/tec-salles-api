@@ -1,0 +1,12 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /v1/dev
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/tec_salles_dev_db?autoReconnect=true&useSSL=false
+    username: root
+    password: dW1jdGVjX2Rldl9kYg==

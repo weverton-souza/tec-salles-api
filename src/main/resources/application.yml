@@ -1,0 +1,18 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    active: dev
+  jackson:
+    mapper:
+      sort-properties-alphabetically: true
+    default-property-inclusion: non_null
+  output:
+    ansi:
+      enabled: ALWAYS
+  serialization:
+    INDENT_OUTPUT: true
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
