@@ -1,13 +1,18 @@
 package com.tec.salles.service;
 
 import com.tec.salles.entity.*;
+import com.tec.salles.repository.UserAccessRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.beans.Transient;
+import java.security.SecureRandom;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.UUID;
 
 @Service
 public class DBService {
@@ -17,19 +22,25 @@ public class DBService {
     private final OrderItemService orderItemService;
     private final CustomerService customerService;
     private final OrderService orderService;
+    private final UserAccessRepository userAccessRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     public DBService(CategoryService categoryService, ProductService productService,
-                     OrderItemService orderItemService, CustomerService customerService, OrderService orderService) {
+                     OrderItemService orderItemService, CustomerService customerService, OrderService orderService, UserAccessRepository userAccessRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.categoryService = categoryService;
         this.productService = productService;
         this.orderItemService = orderItemService;
         this.customerService = customerService;
         this.orderService = orderService;
+        this.userAccessRepository = userAccessRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
 
+    @Transient
     public void instantiateTestDatabase() throws ParseException {
+
         Category cat1 = new Category(null, "Informática", true);
         Category cat2 = new Category(null, "Escritório", true);
         Category cat3 = new Category(null, "Cama mesa e banho", true);
@@ -38,29 +49,29 @@ public class DBService {
         Category cat6 = new Category(null, "Decoração", true);
         Category cat7 = new Category(null, "Perfumaria", true);
 
-        Product p1 = new Product(null, "Computador", 2000.09);
-        Product p2 = new Product(null, "Impressora", 800.89);
-        Product p3 = new Product(null, "Mouse", 80.50);
-        Product p4 = new Product(null, "Mesa de escritório", 300.60);
-        Product p5 = new Product(null, "Toalha", 50.00);
-        Product p6 = new Product(null, "Colcha", 200.00);
-        Product p7 = new Product(null, "TV true color", 1200.00);
-        Product p8 = new Product(null, "Roçadeira", 800.00);
-        Product p9 = new Product(null, "Abajour", 100.34);
-        Product p10 = new Product(null, "Pendente", 180.99);
-        Product p11 = new Product(null, "Shampoo", 90.35);
+        Product p1 = new Product(null, "Computador", 2000.09, "P001");
+        Product p2 = new Product(null, "Impressora", 800.89, "P002");
+        Product p3 = new Product(null, "Mouse", 80.50, "P003");
+        Product p4 = new Product(null, "Mesa de escritório", 300.60, "P004");
+        Product p5 = new Product(null, "Toalha", 50.00, "P005");
+        Product p6 = new Product(null, "Colcha", 200.00, "P006");
+        Product p7 = new Product(null, "TV true color", 1200.00, "P007");
+        Product p8 = new Product(null, "Roçadeira", 800.00, "P008");
+        Product p9 = new Product(null, "Abajour", 100.34, "P009");
+        Product p10 = new Product(null, "Pendente", 180.99, "P010");
+        Product p11 = new Product(null, "Shampoo", 90.35, "P011");
 
         p1.getCategories().addAll(Arrays.asList(cat1, cat4));
         p2.getCategories().addAll(Arrays.asList(cat1, cat2, cat4));
         p3.getCategories().addAll(Arrays.asList(cat1, cat4));
-        p4.getCategories().addAll(Arrays.asList(cat2));
-        p5.getCategories().addAll(Arrays.asList(cat3));
-        p6.getCategories().addAll(Arrays.asList(cat3));
-        p7.getCategories().addAll(Arrays.asList(cat4));
-        p8.getCategories().addAll(Arrays.asList(cat5));
-        p9.getCategories().addAll(Arrays.asList(cat6));
-        p10.getCategories().addAll(Arrays.asList(cat6));
-        p11.getCategories().addAll(Arrays.asList(cat7));
+        p4.getCategories().addAll(Collections.singletonList(cat2));
+        p5.getCategories().addAll(Collections.singletonList(cat3));
+        p6.getCategories().addAll(Collections.singletonList(cat3));
+        p7.getCategories().addAll(Collections.singletonList(cat4));
+        p8.getCategories().addAll(Collections.singletonList(cat5));
+        p9.getCategories().addAll(Collections.singletonList(cat6));
+        p10.getCategories().addAll(Collections.singletonList(cat6));
+        p11.getCategories().addAll(Collections.singletonList(cat7));
 
         cat1.getProducts().addAll(Arrays.asList(p1, p2, p3));
         cat2.getProducts().addAll(Arrays.asList(p2, p4));
@@ -74,13 +85,18 @@ public class DBService {
         Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11).forEach(this.productService::saveOrUpdate);
 
 
-        Customer cli1 = new Customer(null, "Weverton Souza", "wevertonadm@gmail.com", "36378912377", "asd");
+        Customer cli1 = new Customer(null, "Weverton Souza", "wevertonadm@gmail.com", "36378912377", "C001");
+        Customer cli2 = new Customer(null, "Felipe Medeiros", "felipeps@gmail.com", "36378912377", "C002");
         this.customerService.saveOrUpdate(cli1);
+        this.customerService.saveOrUpdate(cli2);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        UserAccess userAccess = new UserAccess(UUID.randomUUID().toString(), "wevertonad@gmail", "weverton.souza", bCryptPasswordEncoder.encode("123"), "ADMIN");
+        this.userAccessRepository.save(userAccess);
 
-        Order ped1 = new Order(null, sdf.parse("30/09/2017 10:32"), cli1);
-        Order ped2 = new Order(null, sdf.parse("10/10/2017 19:35"), cli1);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+        Order ped1 = new Order(null, sdf.parse("30/09/2017"), cli1);
+        Order ped2 = new Order(null, sdf.parse("10/10/2017"), cli1);
 
         Arrays.asList(ped1, ped2).forEach(this.orderService::saveOrUpdate);
 
@@ -96,5 +112,22 @@ public class DBService {
         p3.getItems().addAll(Collections.singletonList(ip2));
 
         Arrays.asList(ip1, ip2, ip3).forEach(this.orderItemService::saveOrUpdate);
+    }
+
+    public static String gRandomCode() {
+        String letters = "ACEFGHJKLMNPQRUVWXY";
+        String digits = "0123456789";
+
+        SecureRandom random = new SecureRandom();
+
+        StringBuilder sb = new StringBuilder(4);
+            sb
+                    .append(digits.charAt(random.nextInt(digits.length())))
+                    .append(digits.charAt(random.nextInt(digits.length())))
+                    .append(letters.charAt(random.nextInt(letters.length())))
+                    .append(digits.charAt(random.nextInt(digits.length())));
+
+        return sb.toString();
+
     }
 }

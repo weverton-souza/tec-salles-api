@@ -2,15 +2,17 @@ package com.tec.salles.resource;
 
 import com.tec.salles.entity.Category;
 import com.tec.salles.service.CategoryService;
+import io.swagger.annotations.Api;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @CrossOrigin
 @RestController
 @RequestMapping("/categories")
+@Api(value = "Category", tags = ":: CATEGORY ::", description = "Category resources")
 public class CategoryResource {
 
     private final CategoryService categoryService;
@@ -35,8 +37,8 @@ public class CategoryResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<Category>> findAll() {
-        return new ResponseEntity<>(this.categoryService.findAll(), HttpStatus.OK);
+    public ResponseEntity<Page<Category>> findAll(final Pageable pageable) {
+        return new ResponseEntity<>(this.categoryService.findAll(pageable), HttpStatus.OK);
     }
 
     @DeleteMapping("/{categoryId}")

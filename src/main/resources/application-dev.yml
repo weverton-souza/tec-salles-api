@@ -7,6 +7,14 @@ spring:
   main:
     allow-bean-definition-overriding: true
   datasource:
-    url: jdbc:mysql://localhost:3306/tec_salles_dev_db?autoReconnect=true&useSSL=false
+    url: jdbc:mysql://localhost:3306/tec_sales_dev_db?autoReconnect=true&useSSL=false
     username: root
     password: dW1jdGVjX2Rldl9kYg==
+
+#=-=-=-=-=-=-=-= JWT =-=-=-=-=-=-=-=#
+tec-sales:
+  jwt:
+    secret: S%QgqhLfvrP#aNMfpVU$S^4#R8TfkynK
+    expiration: 600000
+    read-timeout: 10000
+    connect-timeout: 10000

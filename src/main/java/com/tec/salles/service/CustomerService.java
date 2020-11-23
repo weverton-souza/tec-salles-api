@@ -1,6 +1,7 @@
 package com.tec.salles.service;
 
 import com.tec.salles.entity.Customer;
+import com.tec.salles.entity.Product;
 import com.tec.salles.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,10 @@ public class CustomerService {
 
     public Customer findById(final String customerId) {
         return this.customerRepository.findById(customerId).orElseThrow();
+    }
+
+    public Customer findByCode(final String customerCode) {
+        return this.customerRepository.findByCode(customerCode).orElseThrow();
     }
 
     public List<Customer> findAll() {

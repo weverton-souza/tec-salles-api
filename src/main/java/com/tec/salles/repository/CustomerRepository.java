@@ -1,8 +1,13 @@
 package com.tec.salles.repository;
 
 import com.tec.salles.entity.Customer;
+import com.tec.salles.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
-public interface CustomerRepository extends JpaRepository<Customer, String> {}
+public interface CustomerRepository extends JpaRepository<Customer, String> {
+    Optional<Customer> findByCode(String code);
+}

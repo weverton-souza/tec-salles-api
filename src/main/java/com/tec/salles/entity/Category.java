@@ -1,9 +1,8 @@
 package com.tec.salles.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +16,7 @@ public class Category implements Serializable {
     private String id;
     private String name;
     private Boolean status;
+    @JsonIgnore
     @ManyToMany(mappedBy="categories")
     private List<Product> products = new ArrayList<>();
 

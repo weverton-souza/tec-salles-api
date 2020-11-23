@@ -17,10 +17,9 @@ public class Customer implements Serializable {
 
     private String name;
 
-    private String email;
+    private String code;
 
-    @JsonIgnore
-    private String password;
+    private String email;
 
     private String phone;
 
@@ -30,12 +29,12 @@ public class Customer implements Serializable {
 
     public Customer() {}
 
-    public Customer(String id, String name, String email, String phone, String password) {
+    public Customer(String id, String name, String email, String phone, String code) {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.password = password;
         this.phone = phone;
+        this.code = code;
     }
 
     public String getId() {
@@ -65,17 +64,17 @@ public class Customer implements Serializable {
         return this;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public Customer setPassword(String password) {
-        this.password = password;
-        return this;
-    }
-
     public String getPhone() {
         return phone;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public Customer setCode(String code) {
+        this.code = code;
+        return this;
     }
 
     public Customer setPhone(String phone) {

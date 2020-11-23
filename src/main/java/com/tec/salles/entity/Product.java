@@ -12,10 +12,11 @@ public class Product implements Serializable {
 
     @Id
     private String id;
+    @Column(unique = true)
+    private String code;
     private String name;
     private Double price;
 
-    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "product_category",
             joinColumns = @JoinColumn(name = "product_id"),
@@ -29,8 +30,9 @@ public class Product implements Serializable {
 
     public Product() {}
 
-    public Product(String id, String name, Double price) {
+    public Product(String id, String name, Double price, String code) {
         this.id = id;
+        this.code = code;
         this.name = name;
         this.price = price;
     }
@@ -86,6 +88,15 @@ public class Product implements Serializable {
 
     public Product setItems(Set<OrderItem> items) {
         this.items = items;
+        return this;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public Product setCode(String code) {
+        this.code = code;
         return this;
     }
 

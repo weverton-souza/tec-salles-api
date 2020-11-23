@@ -2,6 +2,9 @@ package com.tec.salles.resource;
 
 import com.tec.salles.entity.Order;
 import com.tec.salles.service.OrderService;
+import io.swagger.annotations.Api;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +14,7 @@ import java.util.List;
 @CrossOrigin
 @RestController
 @RequestMapping("/orders")
+@Api(value = "Order", tags = ":: ORDER ::", description = "Order resources")
 public class OrderResource {
 
     private final OrderService orderService;
@@ -35,8 +39,8 @@ public class OrderResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<Order>> findAll() {
-        return new ResponseEntity<>(this.orderService.findAll(), HttpStatus.OK);
+    public ResponseEntity<Page<Order>> findAll(Pageable pageable) {
+        return new ResponseEntity<>(this.orderService.findAll(pageable), HttpStatus.OK);
     }
 
     @DeleteMapping("/{orderId}")

@@ -16,7 +16,7 @@ public class Order implements Serializable {
     @Id
     private String id;
 
-    @JsonFormat(pattern="dd/MM/yyyy HH:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="dd/MM/yyyy", locale = "pt_BR")
     private Date date;
 
     @ManyToOne
@@ -52,11 +52,11 @@ public class Order implements Serializable {
         return this;
     }
 
-    public Customer getOrder() {
+    public Customer getCustomer() {
         return customer;
     }
 
-    public Order setOrder(Customer customer) {
+    public Order setCustomer(Customer customer) {
         this.customer = customer;
         return this;
     }
